@@ -28,7 +28,7 @@ func main() {
 
 	dbURL := os.Getenv("DB_URL")
 	if dbURL == "" {
-		log.Fatal("PORT env var is not set")
+		log.Fatal("DB_URL env var is not set")
 	}
 
 	dbConn, err := sql.Open("postgres", dbURL)
@@ -52,6 +52,8 @@ func main() {
 
 	mux.HandleFunc("GET /v1/healthz", handlerReadiness)
 	mux.HandleFunc("GET /v1/err", handlerErr)
+
+	mux.HandleFunc("GET /v1/users", apiCfg.handlerGetUser)
 	mux.HandleFunc("POST /v1/users", apiCfg.handlerCreateUser)
 
 	log.Printf("Server starting on port: %s", port)
